@@ -43,6 +43,13 @@ class InvalidOperationError(AppError):
     code = "invalid_operation"
 
 
+class UnanswerableQuestionError(AppError):
+    """The model kept producing a plan the sheet cannot support, e.g. a column it lacks."""
+
+    status_code = 422
+    code = "unanswerable_question"
+
+
 class LlmUnavailableError(AppError):
     """The model could not produce a valid plan (provider error or retries exhausted)."""
 

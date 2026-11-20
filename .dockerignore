@@ -1,0 +1,12 @@
+# Never ship credentials; pass them at run time with --env-file.
+.env
+.git
+.venv
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+dist/
+data/
+*.xlsx
+.DS_Store

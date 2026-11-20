@@ -8,7 +8,7 @@ from typing import Literal
 
 import pandas as pd
 
-from llm_data_assistant.errors import WorkbookNotFoundError
+from llm_data_assistant.errors import UnknownColumnError, WorkbookNotFoundError
 
 ColumnKind = Literal["numeric", "text", "datetime", "bool"]
 
@@ -33,6 +33,14 @@ class StoredSheet:
     @property
     def column_names(self) -> list[str]:
         return [c.name for c in self.columns]
+
+    def column(self, name: str) -> ColumnInfo:
+        for info in self.columns:
+            if info.name == name:
+                return info
+        raise UnknownColumnError(
+            f"Unknown column '{name}'. Available columns: {', '.join(self.column_names)}."
+        )
 
 
 class WorkbookStore:

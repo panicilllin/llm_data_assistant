@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from functools import lru_cache
 
+from dotenv import load_dotenv
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -19,9 +20,11 @@ class Settings(BaseSettings):
     # How many times pydantic-ai may ask the model to fix an invalid plan.
     llm_output_retries: int = 2
 
-    max_upload_bytes: int = 10 * 1024 * 1024
-
 
 @lru_cache
 def get_settings() -> Settings:
+    # pydantic-settings reads .env only into the fields above; provider keys such as
+    # DEEPSEEK_API_KEY are read by pydantic-ai from os.environ, so export .env there.
+    # Same path as env_file (the working directory); real env vars still win.
+    load_dotenv(".env")
     return Settings()

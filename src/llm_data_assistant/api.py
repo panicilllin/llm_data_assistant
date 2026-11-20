@@ -36,7 +36,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         results: list[UploadedWorkbook] = []
         for upload_file in files:
             filename = upload_file.filename or "unnamed.xlsx"
-            # TODO: enforce settings.max_upload_bytes
             content = await upload_file.read()
             try:
                 sheet = load_first_sheet(store.new_id(), filename, content)
