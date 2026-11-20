@@ -1,0 +1,46 @@
+[project]
+name = "llm-data-assistant"
+version = "0.1.0"
+description = "FastAPI service: ask natural-language questions about uploaded Excel sheets"
+readme = "README.md"
+authors = [
+    { name = "SunZhongzhi", email = "20611870+panicilllin@users.noreply.github.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.165.0",
+    "openpyxl>=3.1.5",
+    "pandas>=3.1.1",
+    "pydantic-ai-slim[anthropic,openai]>=2.63.0",
+    "pydantic-settings>=2.16.2",
+    "python-multipart>=0.0.32",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[project.scripts]
+llm-data-assistant = "llm_data_assistant:main"
+
+[build-system]
+requires = ["uv_build>=0.13.6,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=8.4.2",
+    "ruff>=0.17.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["llm_data_assistant", "fakes"]
