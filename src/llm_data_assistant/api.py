@@ -15,6 +15,10 @@ from llm_data_assistant.plan import Unsupported
 from llm_data_assistant.schemas import ChatRequest, ChatResponse, UploadedWorkbook, UploadResponse
 from llm_data_assistant.store import WorkbookStore
 
+# Swagger UI (latest 5.x) shows a file picker only for `format: binary`, not for the
+# OpenAPI 3.1 form FastAPI emits for list[UploadFile]. Docs only; parsing is unchanged.
+_FILE_PICKER_IN_DOCS = {"items": {"type": "string", "format": "binary"}}
+
 
 def create_app(settings: Settings | None = None) -> FastAPI:
     settings = settings or get_settings()
@@ -30,7 +34,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     @app.post("/upload")
     async def upload(
-        request: Request, files: Annotated[list[UploadFile], File()]
+        request: Request,
+        files: Annotated[list[UploadFile], File(json_schema_extra=_FILE_PICKER_IN_DOCS)],
     ) -> UploadResponse:
         store: WorkbookStore = request.app.state.store
         results: list[UploadedWorkbook] = []
